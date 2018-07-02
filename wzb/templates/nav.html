@@ -1,0 +1,70 @@
+<div class='container'>
+        <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">        
+           <a href='/' class="navbar-brand"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+               <li><a href="/order/processOrder">待处理订单</a></li>
+          
+         <li><a href="/order/viewFinishedOrder">查已完成</a></li>
+                         <li><a href="">/</a></li>
+
+         
+                <li><a href="/order/processInvoice">未结算物资</a></li>
+                   <li><a href="/order/finishedInvoice">已结算物资</a></li>
+                   
+          <li><a href="/order/queryDelivery">货期查询</a></li>
+                   <li><a href="/order/queryOrder">供应商查询物资</a></li>
+
+<li><a href="/accounts/changeProcessCompany"> <font color="red" size="3.5">[ {% if request.user %}{{ request.user.profile.process_company}} {% endif %}]</font></a> </li>
+        </ul>
+          <ul class="nav navbar-nav navbar-right">
+      
+     
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">用户管理 <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="themes">    
+    <li>                            <a href="#"></a>                        </li>
+                        <li>
+                            <font color=red size=3>
+                               
+                            </font>
+                        </li>
+                        <li><a href="/accounts/login/">登录</a></li>
+                        <li><a href="/accounts/logout/">登出</a></li>
+
+                        <li><a href="/accounts/register">注册</a></li>
+                        <li><a href="/accounts/changepwd">修改密码</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/admin">后台管理</a></li>
+
+              </ul>
+            </li>
+          </ul>
+
+               
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-default" role="navigation">
+
+        <ul class="nav navbar-nav">
+         
+
+
+
+            <li><a href="">/</a></li>
+
+          
+    </nav>
+
+</div>

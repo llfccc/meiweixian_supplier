@@ -1,0 +1,4 @@
+django==1.10
+django-bootstrap3
+django-el-pagination
+PyMySQL

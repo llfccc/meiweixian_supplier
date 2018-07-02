@@ -1,0 +1,124 @@
+{% extends "base.html" %} {% block body %} {{ block.super }} {% load staticfiles %}
+
+
+
+<!--<script>
+       var $table = $('#table');
+       $(function () {
+           $('#toolbar').find('select').change(function () {
+               $table.bootstrapTable('refreshOptions', {
+                   exportDataType: $(this).val()
+               });
+           });
+       })
+   </script>-->
+<!--<script>
+       function detailFormatter(index, row) {
+           var html = [];
+           $.each(row, function (key, value) {
+               if (key.substring(0, 1) != "_") {
+                   html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+               }
+           });
+           return html.join('');
+       }
+   </script>-->
+<h1 class="text-center">“{%if request.user%} {{ request.user.profile.company_name }} {%endif%}”<a color="red">已完成的订单</a></h1>
+<HR style="border:3 double #987cb9" width="95%" color=#987cb9 SIZE=3>
+
+<form method="post" action="">
+        <div class="form-group col-xs-12">
+            <label for="start_date" class="col-xs-3 control-label">按订单日期查询</label>
+            <div class="col-xs-2">
+                <input type="text" class="form-control form_datetime" name="start_date" id="start_date" placeholder="起始日期">
+
+            </div>
+
+            <div class="col-xs-2">
+                <input type="text" class="form-control form_datetime" name="end_date" id="end_date" placeholder="结束日期">
+            </div>
+            <input class="btn btn-default" value=" 筛选 " type="submit">
+        </div>
+    </form>
+<table id="table" data-toggle="table" data-toolbar="#toolbar" data-show-export="true" data-search="true" data-filter-control="true" data-show-columns="true" data-show-multi-sort="true" data-sort-priority='[{"sortName": "github.count.forks","sortOrder":"desc"},{"sortName":"github.count.stargazers","sortOrder":"desc"}]'
+    data-show-pagination-switch="true" data-pagination="true" data-page-size="8" data-page-list="[5, 10,15]" data-detail-formatter="detailFormatter">
+  <thead>
+    <tr class="warning">
+        <!-- <th align="center" ><div align="center">已接收</div></th>-->
+        <th align="center" data-sortable="true">
+            <div align="center">订单日期</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center">订单号</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center">存货编码</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center">存货名称</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center"> 品牌</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center"> 货号</div>
+        </th>
+
+        <th align="center" data-sortable="true">
+            <div align="center">规格型号</div>
+        </th>
+        <th>
+            <div align="center">备注1</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center">主计量</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center">数量</div>
+        </th>
+
+        <th align="center" data-sortable="true">
+            <div align="center">预计送货日期</div>
+        </th>
+
+        <th align="center">
+            <div align="center">备注</div>
+        </th>
+        <th align="center" data-sortable="true">
+            <div align="center">入库日期</div>
+        </th>
+    </tr>
+</thead>
+    {% for d in data%}
+<tr class="active">
+    <td>{{d.add_date}}</td>
+    <td>{{d.order_code}}</td>
+    <td>{{d.stock_code}}</td>
+    <td>{{d.material_name}}</td>
+    <td>{{d.brand}}</td>
+    <td>{{d.serial_number}}</td>
+    <td>{{d.model}}</td>
+    <td>{{d.comment1}}</td>
+    <td>{{d.unit}}</td>
+    <td>{{d.number}}</td>
+    <td>{%if d.deliver_date%}{{d.deliver_date}}{%endif%}</td>
+    <td>{%if d.remarks%}{{d.remarks}}{%endif%}</td>
+    <td>{%if d.arrival_date%}{{d.arrival_date}}{%endif%}</td>
+</tr>
+    {%endfor%}
+    </table>
+    </div>
+    <script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        minView: "month",
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        language: 'zh-CN',
+    });
+</script>
+    {% endblock body %}

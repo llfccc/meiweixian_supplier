@@ -1,0 +1,127 @@
+{% extends "base.html" %} {% block body %} {{ block.super }}
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'js/_data.js' %}"></script>
+
+<style>
+body { overflow: auto; }
+</style>
+
+  <style type="text/css">
+.keepLine
+{
+word-break: keep-all;
+}
+
+
+th{
+height:35px;
+line-height:35px;
+}
+ .div{margin-left:0px;margin-top:0;position:absolute;width:1366px;
+            overflow:hidden;
+	  }
+</style>
+
+
+	<h1 class="text-center">“{%if request.user%} {{ request.user.profile.company_name }} {%endif%}”已结算发票</h1>
+<HR style="border:3 double #987cb9" width="95%" color=#987cb9 SIZE=3>
+<div id="head">
+
+	<!--<h3 color="blue">还有<font color="red">{{count}}</font>个物资未结算</h3>-->
+	<!--<h4 ><font color="red">请注意：系统设定了不允许修改结算状态，如果勾选了结算，则只会出现在已结算物资页面中</font></h4>-->
+
+</div>
+<form method="post" action="">
+	<div class="form-group col-xs-12">
+		<label for="start_date" class="col-xs-3 control-label">按订单日期查询</label>
+		<div class="col-xs-2">
+			<input type="text" class="form-control form_datetime" name="start_date" id="start_date" placeholder="起始日期">
+
+		</div>
+
+		<div class="col-xs-2">
+			<input type="text" class="form-control form_datetime" name="end_date" id="end_date" placeholder="结束日期">
+		</div>
+		<input class="btn btn-default" value=" 筛选 " type="submit">
+	</div>
+</form>
+
+<table id="table" data-toggle="table" data-toolbar="#toolbar" data-show-export="true" data-search="true" data-filter-control="true" data-show-columns="true" data-show-multi-sort="true" data-sort-priority='[{"sortName": "github.count.forks","sortOrder":"desc"},{"sortName":"github.count.stargazers","sortOrder":"desc"}]'
+				data-show-pagination-switch="true" data-pagination="true" data-page-size="8" data-page-list="[5, 10,15]" data-detail-formatter="detailFormatter">
+	<thead>
+		<tr class="warning">
+
+
+			<th align="center" data-sortable="true">
+				<div align="center">入库日期</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">订单号</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">入库单号</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">存货编码</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">存货名称</div>
+			</th>
+			<th align="center">
+				<div align="center">规格型号</div>
+			</th>
+
+			<th align="center">
+				<div align="center">主计量</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">数量</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">本币无税单价</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">本币无税金额</div>
+			</th>
+			<th align="center" data-sortable="true">
+				<div align="center">原币含税单价</div>
+			</th>
+
+			<th align="center" data-sortable="true">
+				<div align="center">阶段报价</div>
+			</th>
+			<!--<th align="center" data-sortable="true">
+				<div align="center">结算</div>
+			</th>-->
+		</tr>
+	</thead>
+
+	<tbody>
+		{% for d in data%}
+		<tr class="table-striped">
+
+			<td>{{d.add_date}}</td>
+			<td>{{d.order_code}}</td>
+			<td>{{d.storage_code}}</td>
+			<td>{{d.stock_code}}</td>
+			<td>{{d.material_name}}</td>
+			<td>{{d.model}}</td>
+
+			<td>{{d.unit}}</td>
+			<td>{{d.number}}</td>
+			<td>{{d.noTaxPrice}}</td>
+			<!--precision是小数点位数，method有common,ceil,floor三种。common是四舍五入，ceil和floor与 python的同名函数功能相同。-->
+			<td>{{d.noTaxMoney}}</td>
+
+			<td>{{d.price}}</td>
+		
+			<td>{{d.stageQuotation}}</td>
+			<!--<td><input type="checkbox" name="settlement" id="settlement{{d.id}}"></td>-->
+		</tr>
+		{%endfor%}
+	</tbody>
+	</table>
+</div>
+
+
+{% endblock body %}

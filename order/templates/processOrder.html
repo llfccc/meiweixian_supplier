@@ -1,0 +1,153 @@
+{% extends "base.html" %} {% block body %} {{ block.super }} {% load staticfiles %}
+
+<script type="text/javascript" src="{% static 'js/_data.js' %}"></script>
+
+<script>
+    function demo(id) {
+        k = id.substring(7);
+        checkbox_id = "receive" + k;
+        deliver_date_id = "deliver_date" + k;
+        arrival_date_id = "arrival_date" + k;
+        if ($('#' + checkbox_id).is(':checked')) {
+            $('#' + deliver_date_id).removeAttr("disabled");
+            $('#' + arrival_date_id).removeAttr("disabled");
+        } else {
+            $('#' + deliver_date_id).val("");
+            $('#' + arrival_date_id).val("");
+            $('#' + deliver_date_id).attr("disabled", "True");
+            $('#' + arrival_date_id).attr("disabled", "True");
+        }
+
+    }
+</script>
+<script>
+    var $table = $('#table');
+    $(function() {
+        $('#toolbar').find('select').change(function() {
+            $table.bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    })
+</script>
+{% load el_pagination_tags %}
+
+<h1 class="text-center">“ {%if request.user%} {{ request.user.profile.company_name }} {%endif%}”未完成订单</h1>
+<HR style="border:3 double #987cb9" width="95%" color=#987cb9 SIZE=3>
+<div id="head" class="container" style="margin:0 auto;">
+
+    <h3 color="blue">还有<font color="red">{{count2}}</font>个物资未接收</h3>
+    <h3 color="blue">还有<font color="red">{{count}}</font>个物资未送货</h3>
+    <h4><font color="red">请注意：必须先勾选接收，才能输入预计送货日期和实际送货日期</font></h4>
+</div>
+
+<!--<div class="table_so  " >-->
+<div class="container">
+    <table id="tb" class="table table-bordered table-hover table-responsive table-striped table-condensed ">
+        <thead>
+            <tr class="warning">
+                <th style="height:35px">
+                    <div style="width:35px">接收</div>
+                </th>
+                <th>
+                    <div align="center" style="width:80px; ">订单日期</div>
+                </th>
+                <th>
+                    <div align="center" style="width:55px; ">订单号</div>
+                </th>
+                <th>
+                    <div align="center" style="width:70px; ">存货编码</div>
+                </th>
+                <th>
+                    <div align="center" style="width:120px; "> 存货名称</div>
+                </th>
+                <th>
+                    <div align="center" style="width:60px; "> 品牌</div>
+                </th>
+                <th>
+                    <div align="center" style="width:60px; "> 货号</div>
+                </th>
+                <th>
+                    <div align="center" style="width:150px; ">规格型号</div>
+                </th>
+                <th>
+                    <div align="center" style="width:100px; ">备注1</div>
+                </th>
+                <th>
+                    <div align="center" style="width:35px; ">主计量</div>
+                </th>
+                <th>
+                    <div align="center" style="width:45px; ">数量</div>
+                </th>
+
+                <th>
+                    <div align="center" style="width:120px; ">预计送货日期</div>
+                </th>
+                <th>备注</th>
+                <th>
+                    <div align="center" style="width:120px; ">实际送货日期</div>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {%if data%}
+              {% paginate data %}
+
+            {% for d in data%}
+            <tr class="table-striped">
+                <td><input type="checkbox" name="received" id="receive{{d.id}}" onclick="demo(this.id) " value="" {%if d.received%}checked="True" disabled="true" {%endif%}></td>
+                <td>{{d.add_date |date:"Y-m-d" }}</td>
+                <td>{{d.order_code}}</td>
+                <td>{{d.stock_code}}</td>
+                <td>{{d.material_name}}</td>
+                <td>{{d.brand}}</td>
+                <td>{{d.serial_number}}</td>
+                <td>{{d.model}}</td>
+                <td>{{d.comment1}}</td>
+                <td>{{d.unit}}</td>
+                <td>{{d.number}}</td>
+
+                <td>
+                    <div class="form-group">
+                        <div class="input-group date col-md-5" id="deliver_datetime{{d.id}}">
+                            <input style="width:110px" {%if not d.received%}disabled="true" {%endif%} class="form-control form_datetime" type="text" name="deliver_date" id="deliver_date{{d.id}}" {%if d.deliver_date%}value="{{d.deliver_date|date:"Y-m-d" }}" {%endif%}/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove" onclick="$('#deliver_date{{d.id}}').val('')"></span></span>
+                        </div>
+                    </div>
+                </td>
+                <td><input class="form-control" style="width:160px;word-break:break-all; " type="text" name="remarks" id="remarks{{d.id}}" {%if d.remarks%}value="{{d.remarks}}" {%endif%}/></td>
+                <td>
+                    <div class="form-group">
+                        <div class="input-group date  col-md-5" id="arrival_datetime{{d.id}}">
+                            <input style="width:110px" {%if not d.received%} disabled="true" {%endif%} class="form-control form_datetime " name="arrival_date" id="arrival_date{{d.id}}" {%if d.arrival_date%}value="{{d.arrival_date|date:"Y-m-d"}}" {%endif%}/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove" onclick="$('#arrival_date{{d.id}}').val('')" ></span></span>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {%endfor%}
+
+        </tbody>
+    </table>
+                 {% get_pages %}
+<ul class="pagination">
+    {% for page in pages %}
+        <li>
+            <a href="{{ page.path }}" rel="page" class="endless_page_link">{{ page.number }}</a>
+        </li>
+    {% endfor %}
+</ul>
+               {% endif %}
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+            <botton class="btn btn-success btn" onclick="mysum()"><span class="label label-success m-l-xs">提交</span></botton>
+        </div>
+
+    </div>
+</div>
+
+{% endblock body %}
